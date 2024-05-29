@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.plcoding.runique"
+    namespace = "com.dsphoenix.runique"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.plcoding.runique"
+        applicationId = "com.dsphoenix.runique"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
