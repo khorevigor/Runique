@@ -66,7 +66,7 @@ fun GradientBackground(
                         ),
                         center = Offset(
                             x = screenWidthPx / 2f,
-                            y = -100f
+                            y = -50f
                         ),
                         radius = smallDimensionPx / 2f
                     )
