@@ -60,7 +60,7 @@ val Typography = Typography(
     headlineMedium = TextStyle(
         fontFamily = Poppins,
         fontWeight = FontWeight.SemiBold,
-        lineHeight = 24.sp,
+        fontSize = 24.sp,
         color = RuniqueWhite
     )
 )
