@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.dsphoenix.auth.presentation.intro.IntroScreen
+import com.dsphoenix.auth.presentation.register.RegisterScreen
+import com.dsphoenix.auth.presentation.register.RegisterState
 import com.dsphoenix.core.presentation.designsystem.AnalyticsIcon
 import com.dsphoenix.core.presentation.designsystem.RuniqueTheme
 
@@ -20,7 +22,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RuniqueTheme {
-                IntroScreen (onAction = {})
+                RegisterScreen(RegisterState(), onAction = {})
             }
         }
     }

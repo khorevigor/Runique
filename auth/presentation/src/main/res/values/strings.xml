@@ -5,4 +5,10 @@
     <string name="runique_description">Track your runs, set goals and achieve your fitness milestones.</string>
     <string name="sign_up">Sign up</string>
     <string name="sign_in">Sign in</string>
+    <string name="create_account">Create account</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="login">Login</string>
+    <string name="example_email">your.email@example.com</string>
+    <string name="email">Email</string>
+    <string name="must_be_a_valid_email">Must be a vaild email</string>
 </resources>
