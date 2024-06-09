@@ -2,6 +2,7 @@
 
 package com.dsphoenix.auth.presentation.register
 
+import android.widget.Space
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -31,6 +32,7 @@ import com.dsphoenix.core.presentation.designsystem.Poppins
 import com.dsphoenix.core.presentation.designsystem.RuniqueGray
 import com.dsphoenix.core.presentation.designsystem.RuniqueTheme
 import com.dsphoenix.core.presentation.designsystem.components.GradientBackground
+import com.dsphoenix.core.presentation.designsystem.components.RuniquePasswordTextField
 import com.dsphoenix.core.presentation.designsystem.components.RuniqueTextField
 import org.koin.androidx.compose.koinViewModel
 
@@ -109,6 +111,17 @@ fun RegisterScreen(
                 modifier = Modifier.fillMaxWidth(),
                 additionalInfo = stringResource(id = R.string.must_be_a_valid_email),
                 keyboardType = KeyboardType.Email,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            RuniquePasswordTextField(
+                state = state.password,
+                isPasswordVisible = state.isPasswordVisible,
+                onTogglePasswordVisibility = {
+                    onAction(RegisterAction.OnTogglePasswordVisibilityClick)
+                },
+                hint = stringResource(id = R.string.password),
+                title = stringResource(id = R.string.password),
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }

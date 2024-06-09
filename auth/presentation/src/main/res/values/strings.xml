@@ -11,4 +11,5 @@
     <string name="example_email">your.email@example.com</string>
     <string name="email">Email</string>
     <string name="must_be_a_valid_email">Must be a vaild email</string>
+    <string name="password">Password</string>
 </resources>
