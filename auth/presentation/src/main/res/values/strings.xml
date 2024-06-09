@@ -12,4 +12,9 @@
     <string name="email">Email</string>
     <string name="must_be_a_valid_email">Must be a vaild email</string>
     <string name="password">Password</string>
+    <string name="at_least_x_characters">At least %d characters</string>
+    <string name="at_least_one_number">At least one number</string>
+    <string name="contains_lowercase_character">Contains lowercase character</string>
+    <string name="contains_uppercase_character">Contains uppercase character</string>
+    <string name="register">Register</string>
 </resources>
