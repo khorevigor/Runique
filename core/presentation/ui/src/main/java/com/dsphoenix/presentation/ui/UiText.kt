@@ -3,6 +3,7 @@ package com.dsphoenix.presentation.ui
 import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 
 sealed interface UiText {
 
@@ -13,6 +14,13 @@ sealed interface UiText {
     ): UiText
 
     @Composable
+    fun asString(): String {
+        return when(this) {
+            is DynamicString -> value
+            is StringResource -> stringResource(id, *args)
+        }
+    }
+
     fun asString(context: Context): String {
         return when(this) {
             is DynamicString -> value

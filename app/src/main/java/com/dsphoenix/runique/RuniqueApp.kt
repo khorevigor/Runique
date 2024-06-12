@@ -3,6 +3,7 @@ package com.dsphoenix.runique
 import android.app.Application
 import com.dsphoenix.auth.data.di.authDataModule
 import com.dsphoenix.auth.presentation.di.authViewModelModule
+import com.dsphoenix.core.data.networking.di.coreDataModule
 import com.dsphoenix.runique.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -24,7 +25,8 @@ class RuniqueApp: Application() {
             modules(
                 authDataModule,
                 authViewModelModule,
-                appModule
+                appModule,
+                coreDataModule
             )
         }
     }
