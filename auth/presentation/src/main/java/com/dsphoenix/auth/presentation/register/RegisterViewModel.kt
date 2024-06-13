@@ -12,10 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dsphoenix.auth.domain.AuthRepository
 import com.dsphoenix.auth.domain.UserDataValidator
-import com.dsphoenix.auth.presentation.R
-import com.dsphoenix.core.domain.util.DataError
 import com.dsphoenix.core.domain.util.Result
-import com.dsphoenix.presentation.ui.UiText
 import com.dsphoenix.presentation.ui.asUiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
@@ -75,15 +72,7 @@ class RegisterViewModel(
 
             when (result) {
                 is Result.Error -> {
-                    if (result.error == DataError.Network.CONFLICT) {
-                        eventChannel.send(
-                            RegisterEvent.Error(
-                                UiText.StringResource(R.string.error_email_exists)
-                            )
-                        )
-                    } else {
-                        eventChannel.send(RegisterEvent.Error(result.error.asUiText()))
-                    }
+                    eventChannel.send(RegisterEvent.Error(result.error.asUiText()))
                 }
                 is Result.Success -> {
                     eventChannel.send(RegisterEvent.RegistrationSuccess)

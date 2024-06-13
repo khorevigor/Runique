@@ -1,5 +1,6 @@
 package com.dsphoenix.runique
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -19,6 +20,7 @@ fun NavigationRoot(
         startDestination = "auth"
     ) {
         authGraph(navController)
+        runGraph(navController)
     }
 }
 
@@ -51,7 +53,7 @@ private fun NavGraphBuilder.authGraph(
                     }
                 },
                 onSuccessfulRegistration = {
-                    navController.navigate("login")
+                    navController.navigate("run_overview")
                 }
             )
         }
@@ -74,6 +76,16 @@ private fun NavGraphBuilder.authGraph(
                     }
                 },
             )
+        }
+    }
+}
+
+private fun NavGraphBuilder.runGraph(
+    navController: NavHostController
+) {
+    navigation(startDestination = "run_overview", route = "run") {
+        composable(route = "run_overview") {
+            Text(text = "run overview")
         }
     }
 }

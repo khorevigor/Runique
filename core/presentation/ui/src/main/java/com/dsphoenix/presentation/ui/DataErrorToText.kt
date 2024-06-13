@@ -11,7 +11,7 @@ fun DataError.asUiText(): UiText {
         DataError.Network.PAYLOAD_TOO_LARGE -> UiText.StringResource(R.string.error_payload_too_large)
         DataError.Network.SERVER_ERROR -> UiText.StringResource(R.string.error_server_error)
         DataError.Network.SERIALIZATION -> UiText.StringResource(R.string.error_couldnt_parse_data)
+        DataError.Network.CONFLICT -> UiText.StringResource(R.string.error_email_exists)
         else -> UiText.StringResource(R.string.error_unknown_error)
-
     }
 }

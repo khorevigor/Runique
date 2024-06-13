@@ -8,4 +8,5 @@
     <string name="error_server_error">Something went wrong, pleas try again</string>
     <string name="error_couldnt_parse_data">Couldn\'t parse data</string>
     <string name="error_unknown_error">Unknown error occured</string>
+    <string name="error_email_exists">User with this email already exists</string>
 </resources>
