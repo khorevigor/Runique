@@ -38,7 +38,6 @@ import com.dsphoenix.core.presentation.designsystem.CrossIcon
 import com.dsphoenix.core.presentation.designsystem.EmailIcon
 import com.dsphoenix.core.presentation.designsystem.Poppins
 import com.dsphoenix.core.presentation.designsystem.RuniqueDarkRed
-import com.dsphoenix.core.presentation.designsystem.RuniqueGray
 import com.dsphoenix.core.presentation.designsystem.RuniqueGreen
 import com.dsphoenix.core.presentation.designsystem.RuniqueTheme
 import com.dsphoenix.core.presentation.designsystem.components.GradientBackground
@@ -56,7 +55,7 @@ fun RegisterScreenRoot(
 ) {
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    ObserveAsEvents(flow = viewModel.events) {event ->
+    ObserveAsEvents(flow = viewModel.events) { event ->
         when (event) {
             is RegisterEvent.Error -> {
                 keyboardController?.hide()
@@ -80,7 +79,13 @@ fun RegisterScreenRoot(
     }
     RegisterScreen(
         state = viewModel.state,
-        onAction = viewModel::onAction
+        onAction = { action ->
+            when (action) {
+                is RegisterAction.OnLoginClick -> { onSignInClick() }
+                else -> Unit
+            }
+            viewModel.onAction(action)
+        }
     )
 }
 
@@ -106,7 +111,7 @@ fun RegisterScreen(
                 withStyle(
                     style = SpanStyle(
                         fontFamily = Poppins,
-                        color = RuniqueGray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 ) {
                     append(stringResource(id = R.string.already_have_an_account) + " ")
