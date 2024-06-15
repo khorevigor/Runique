@@ -9,6 +9,7 @@ import androidx.navigation.compose.navigation
 import com.dsphoenix.auth.presentation.intro.IntroScreenRoot
 import com.dsphoenix.auth.presentation.login.LoginScreenRoot
 import com.dsphoenix.auth.presentation.register.RegisterScreenRoot
+import com.dsphoenix.run.presentation.active_run.ActiveRunScreenRoot
 import com.dsphoenix.run.presentation.run_overview.RunOverviewScreenRoot
 
 @Composable
@@ -84,9 +85,19 @@ private fun NavGraphBuilder.authGraph(
 private fun NavGraphBuilder.runGraph(
     navController: NavHostController
 ) {
-    navigation(startDestination = "run_overview", route = "run") {
+    navigation(
+        startDestination = "run_overview",
+        route = "run"
+    ) {
         composable(route = "run_overview") {
-            RunOverviewScreenRoot()
+            RunOverviewScreenRoot(
+                onStartRunClick = {
+                    navController.navigate("active_run")
+                }
+            )
+        }
+        composable(route = "active_run") {
+            ActiveRunScreenRoot()
         }
     }
 }
