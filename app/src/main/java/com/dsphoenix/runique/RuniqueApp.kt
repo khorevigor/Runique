@@ -4,14 +4,19 @@ import android.app.Application
 import com.dsphoenix.auth.data.di.authDataModule
 import com.dsphoenix.auth.presentation.di.authViewModelModule
 import com.dsphoenix.core.data.networking.di.coreDataModule
-import com.dsphoenix.run.presentation.di.runViewModelModule
+import com.dsphoenix.run.location.di.locationModule
+import com.dsphoenix.run.presentation.di.runPresentationModule
 import com.dsphoenix.runique.di.appModule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
 class RuniqueApp: Application() {
+
+    val applicationScope = CoroutineScope(SupervisorJob())
 
     override fun onCreate() {
         super.onCreate()
@@ -28,7 +33,8 @@ class RuniqueApp: Application() {
                 authViewModelModule,
                 appModule,
                 coreDataModule,
-                runViewModelModule
+                runPresentationModule,
+                locationModule
             )
         }
     }
