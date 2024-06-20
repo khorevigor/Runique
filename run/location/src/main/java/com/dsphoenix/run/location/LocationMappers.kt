@@ -7,7 +7,7 @@ fun Location.toLocationWithAltitude(): LocationWithAltitude {
     return LocationWithAltitude(
         location = com.dsphoenix.core.domain.location.Location(
             lat = latitude,
-            lon = longitude
+            long = longitude
         ),
         altitude = altitude
     )
