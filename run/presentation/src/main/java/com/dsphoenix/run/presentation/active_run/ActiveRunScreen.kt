@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.dsphoenix.core.presentation.designsystem.RuniqueTheme
 import com.dsphoenix.core.presentation.designsystem.StartIcon
 import com.dsphoenix.core.presentation.designsystem.StopIcon
+import com.dsphoenix.core.presentation.designsystem.components.RuniqueActionButton
 import com.dsphoenix.core.presentation.designsystem.components.RuniqueDialog
 import com.dsphoenix.core.presentation.designsystem.components.RuniqueFloatingActionButton
 import com.dsphoenix.core.presentation.designsystem.components.RuniqueOutlinedActionButton
@@ -154,6 +155,36 @@ private fun ActiveRunScreen(
         }
     }
 
+    if (!state.shouldTrack && state.hasStartedRunning) {
+        RuniqueDialog(
+            title = stringResource(id = R.string.running_paused),
+            onDismiss = {
+                onAction(ActiveRunAction.OnResumeRunClick)
+            },
+            description = stringResource(id = R.string.resume_or_finish_run),
+            primaryButton = {
+                RuniqueActionButton(
+                    text = stringResource(id = R.string.resume),
+                    isLoading = false,
+                    onClick = {
+                        onAction(ActiveRunAction.OnResumeRunClick)
+                    },
+                    modifier = Modifier.weight(1f)
+                ) 
+            },
+            secondaryButton = {
+                RuniqueOutlinedActionButton(
+                    text = stringResource(id = R.string.finish),
+                    isLoading = state.isSavingRun,
+                    onClick = {
+                        onAction(ActiveRunAction.OnFinishRunClick)
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        )
+    }
+
     if (state.showLocationRationale || state.showNotificationRationale) {
         RuniqueDialog(
             title = stringResource(id = R.string.permission_required),
@@ -203,6 +234,7 @@ private fun ActivityResultLauncher<Array<String>>.requestRuniquePermissions(
         !hasLocationPermission && !hasNotificationPermission -> {
             launch(locationPermission + notificationPermission)
         }
+
         !hasLocationPermission -> launch(locationPermission)
         !hasNotificationPermission -> launch(notificationPermission)
     }
