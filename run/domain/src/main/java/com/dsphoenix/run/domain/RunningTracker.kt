@@ -100,7 +100,7 @@ class RunningTracker(
         isTracking.value = true
     }
 
-    fun endTracking() {
+    fun stopTracking() {
         isTracking.value = false
     }
 
