@@ -30,6 +30,7 @@ import com.dsphoenix.core.presentation.designsystem.components.RuniqueOutlinedAc
 import com.dsphoenix.core.presentation.designsystem.components.RuniqueScaffold
 import com.dsphoenix.core.presentation.designsystem.components.RuniqueToolbar
 import com.dsphoenix.run.presentation.R
+import com.dsphoenix.run.presentation.active_run.maps.TrackerMap
 import com.dsphoenix.run.presentation.components.RunDataCard
 import com.dsphoenix.run.presentation.util.hasLocationPermission
 import com.dsphoenix.run.presentation.util.hasNotificationPermission
@@ -134,6 +135,14 @@ private fun ActiveRunScreen(
             modifier = Modifier
                 .fillMaxSize()
         ) {
+            TrackerMap(
+                isRunFinished = state.isRunFinished,
+                currentLocation = state.currentLocation,
+                locations = state.runData.locations,
+                onSnapshot = {},
+                modifier = Modifier
+                    .fillMaxSize()
+            )
             RunDataCard(
                 elapsedTime = state.elapsedTime,
                 runData = state.runData,
