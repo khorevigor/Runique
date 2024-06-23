@@ -41,17 +41,21 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ActiveRunScreenRoot(
+    onServiceToggle: (isServiceRunning: Boolean) -> Unit,
     viewModel: ActiveRunViewModel = koinViewModel()
 ) {
     ActiveRunScreen(
         state = viewModel.state,
-        onAction = viewModel::onAction
+        onAction = viewModel::onAction,
+        onServiceToggle = onServiceToggle
     )
 }
 
 @Composable
 private fun ActiveRunScreen(
-    state: ActiveRunState, onAction: (ActiveRunAction) -> Unit
+    state: ActiveRunState,
+    onAction: (ActiveRunAction) -> Unit,
+    onServiceToggle: (isServiceRunning: Boolean) -> Unit
 ) {
     val context = LocalContext.current
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -105,6 +109,18 @@ private fun ActiveRunScreen(
 
         if (!showLocationRationale && !showNotificationRationale) {
             permissionLauncher.requestRuniquePermissions(context)
+        }
+    }
+
+    LaunchedEffect(key1 = state.isRunFinished) {
+        if (state.isRunFinished) {
+            onServiceToggle(false)
+        }
+    }
+
+    LaunchedEffect(key1 = state.shouldTrack) {
+        if (context.hasLocationPermission() && state.shouldTrack) {
+            onServiceToggle(true)
         }
     }
 
@@ -170,7 +186,7 @@ private fun ActiveRunScreen(
                         onAction(ActiveRunAction.OnResumeRunClick)
                     },
                     modifier = Modifier.weight(1f)
-                ) 
+                )
             },
             secondaryButton = {
                 RuniqueOutlinedActionButton(
@@ -244,6 +260,10 @@ private fun ActivityResultLauncher<Array<String>>.requestRuniquePermissions(
 @Composable
 private fun ActiveRunScreenPreview() {
     RuniqueTheme {
-        ActiveRunScreen(state = ActiveRunState(), onAction = {})
+        ActiveRunScreen(
+            state = ActiveRunState(),
+            onAction = {},
+            onServiceToggle = {}
+        )
     }
 }
