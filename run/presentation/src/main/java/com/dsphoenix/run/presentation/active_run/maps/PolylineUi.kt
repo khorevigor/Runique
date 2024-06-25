@@ -1,6 +1,7 @@
-package com.dsphoenix.core.domain.location
+package com.dsphoenix.run.presentation.active_run.maps
 
 import androidx.compose.ui.graphics.Color
+import com.dsphoenix.core.domain.location.Location
 
 data class PolylineUi(
     val location1: Location,

@@ -3,7 +3,6 @@ package com.dsphoenix.run.presentation.active_run.maps
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.dsphoenix.core.domain.location.LocationTimestamp
-import com.dsphoenix.core.domain.location.PolylineUi
 import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.Polyline
