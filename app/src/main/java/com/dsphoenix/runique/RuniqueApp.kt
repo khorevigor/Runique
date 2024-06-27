@@ -4,6 +4,7 @@ import android.app.Application
 import com.dsphoenix.auth.data.di.authDataModule
 import com.dsphoenix.auth.presentation.di.authViewModelModule
 import com.dsphoenix.core.data.networking.di.coreDataModule
+import com.dsphoenix.core.database.di.databaseModule
 import com.dsphoenix.run.location.di.locationModule
 import com.dsphoenix.run.presentation.di.runPresentationModule
 import com.dsphoenix.runique.di.appModule
@@ -34,7 +35,8 @@ class RuniqueApp: Application() {
                 appModule,
                 coreDataModule,
                 runPresentationModule,
-                locationModule
+                locationModule,
+                databaseModule
             )
         }
     }
