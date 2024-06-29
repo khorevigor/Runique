@@ -6,6 +6,7 @@ import com.dsphoenix.auth.presentation.di.authViewModelModule
 import com.dsphoenix.core.data.networking.di.coreDataModule
 import com.dsphoenix.core.database.di.databaseModule
 import com.dsphoenix.run.location.di.locationModule
+import com.dsphoenix.run.network.di.networkModule
 import com.dsphoenix.run.presentation.di.runPresentationModule
 import com.dsphoenix.runique.di.appModule
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +37,8 @@ class RuniqueApp: Application() {
                 coreDataModule,
                 runPresentationModule,
                 locationModule,
-                databaseModule
+                databaseModule,
+                networkModule
             )
         }
     }

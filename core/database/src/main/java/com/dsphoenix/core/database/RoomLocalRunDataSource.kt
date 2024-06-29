@@ -18,7 +18,8 @@ class RoomLocalRunDataSource(
 
     override fun getRuns(): Flow<List<Run>> {
         return runDao.getRuns().map { entities ->
-            entities.map { it.toRun() }
+            entities.map {
+                it.toRun() }
         }
     }
 

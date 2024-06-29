@@ -26,7 +26,7 @@ fun Run.toRunEntity(): RunEntity {
         id = id ?: ObjectId().toHexString(),
         durationMillis = duration.inWholeMilliseconds,
         distanceMeters = distanceMeters,
-        dateTimeUtc = dateTimeUtc.toString(),
+        dateTimeUtc = dateTimeUtc.toInstant().toString(),
         latitude = location.lat,
         longitude = location.long,
         avgSpeedKmh = avgSpeedKmh,
