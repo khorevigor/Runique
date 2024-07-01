@@ -6,7 +6,7 @@ import androidx.work.WorkerParameters
 import com.dsphoenix.core.database.dao.RunPendingSyncDao
 import com.dsphoenix.core.domain.run.RemoteRunDataSource
 
-class DeleteRunsWorker(
+class DeleteRunWorker(
     context: Context,
     private val params: WorkerParameters,
     private val remoteRunDataSource: RemoteRunDataSource,

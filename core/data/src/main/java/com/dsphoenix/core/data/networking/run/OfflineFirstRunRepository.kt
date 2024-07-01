@@ -8,6 +8,7 @@ import com.dsphoenix.core.domain.run.RemoteRunDataSource
 import com.dsphoenix.core.domain.run.Run
 import com.dsphoenix.core.domain.run.RunId
 import com.dsphoenix.core.domain.run.RunRepository
+import com.dsphoenix.core.domain.run.SyncRunScheduler
 import com.dsphoenix.core.domain.util.DataError
 import com.dsphoenix.core.domain.util.EmptyResult
 import com.dsphoenix.core.domain.util.Result
@@ -24,7 +25,8 @@ class OfflineFirstRunRepository(
     private val remoteRunDataSource: RemoteRunDataSource,
     private val applicationScope: CoroutineScope,
     private val runPendingSyncDao: RunPendingSyncDao,
-    private val sessionStorage: SessionStorage
+    private val sessionStorage: SessionStorage,
+    private val syncRunScheduler: SyncRunScheduler
 ) : RunRepository {
 
     override fun getRuns(): Flow<List<Run>> {
@@ -52,8 +54,16 @@ class OfflineFirstRunRepository(
         val remoteResult = remoteRunDataSource.postRun(runWithId, mapPicture)
 
         return when (remoteResult) {
-            is Result.Error -> { // TODO: handle error
-                return Result.Success(Unit)
+            is Result.Error -> {
+                applicationScope.launch {
+                    syncRunScheduler.scheduleSync(
+                        syncType = SyncRunScheduler.SyncType.CreateRun(
+                            run = runWithId,
+                            mapPictureBytes = mapPicture
+                        )
+                    )
+                }.join()
+                Result.Success(Unit)
             }
 
             is Result.Success -> {
@@ -75,9 +85,17 @@ class OfflineFirstRunRepository(
             return
         }
 
-        applicationScope.async {
+        val remoteResult = applicationScope.async {
             remoteRunDataSource.deleteRun(id)
         }.await()
+
+        if (remoteResult !is Result.Success) {
+            applicationScope.launch {
+                syncRunScheduler.scheduleSync(
+                    SyncRunScheduler.SyncType.DeleteRun(id)
+                )
+            }.join()
+        }
     }
 
     override suspend fun syncPendingRuns() {
