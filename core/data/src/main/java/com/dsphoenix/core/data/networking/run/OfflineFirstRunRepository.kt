@@ -1,5 +1,6 @@
 package com.dsphoenix.core.data.networking.run
 
+import com.dsphoenix.core.data.networking.get
 import com.dsphoenix.core.database.dao.RunPendingSyncDao
 import com.dsphoenix.core.database.mappers.toRun
 import com.dsphoenix.core.domain.SessionStorage
@@ -13,6 +14,10 @@ import com.dsphoenix.core.domain.util.DataError
 import com.dsphoenix.core.domain.util.EmptyResult
 import com.dsphoenix.core.domain.util.Result
 import com.dsphoenix.core.domain.util.asEmptyDataResult
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerAuthProvider
+import io.ktor.client.plugins.plugin
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -26,7 +31,8 @@ class OfflineFirstRunRepository(
     private val applicationScope: CoroutineScope,
     private val runPendingSyncDao: RunPendingSyncDao,
     private val sessionStorage: SessionStorage,
-    private val syncRunScheduler: SyncRunScheduler
+    private val syncRunScheduler: SyncRunScheduler,
+    private val httpClient: HttpClient
 ) : RunRepository {
 
     override fun getRuns(): Flow<List<Run>> {
@@ -98,6 +104,10 @@ class OfflineFirstRunRepository(
         }
     }
 
+    override suspend fun deleteAllRuns() {
+        localRunDataSource.deleteAllRuns()
+    }
+
     override suspend fun syncPendingRuns() {
         withContext(Dispatchers.IO) {
             val userId = sessionStorage.get()?.userId ?: return@withContext
@@ -138,8 +148,19 @@ class OfflineFirstRunRepository(
                     }
                 }
 
-            createJobs.forEach {it.join()}
-            deleteJobs.forEach {it.join()}
+            createJobs.forEach { it.join() }
+            deleteJobs.forEach { it.join() }
         }
+    }
+
+    override suspend fun logout(): EmptyResult<DataError.Network> {
+        val result = httpClient.get<Unit>(
+            route = "/logout"
+        ).asEmptyDataResult()
+
+        httpClient.plugin(Auth).providers.filterIsInstance<BearerAuthProvider>()
+            .firstOrNull()?.clearToken()
+
+        return result
     }
 }
