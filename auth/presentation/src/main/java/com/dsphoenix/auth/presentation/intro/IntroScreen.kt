@@ -3,7 +3,6 @@ package com.dsphoenix.auth.presentation.intro
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -72,21 +71,21 @@ fun IntroScreen(
             )
             Spacer(modifier = Modifier.height(32.dp))
             RuniqueActionButton(
-                text = stringResource(id = R.string.sign_up),
-                isLoading = false,
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                    onAction(IntroAction.OnSignUpClick)
-                }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            RuniqueOutlinedActionButton(
                 text = stringResource(id = R.string.sign_in),
                 isLoading = false,
                 onClick = {
                     onAction(IntroAction.OnSignInClick)
                 },
                 modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            RuniqueOutlinedActionButton(
+                text = stringResource(id = R.string.sign_up),
+                isLoading = false,
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    onAction(IntroAction.OnSignUpClick)
+                }
             )
         }
     }
