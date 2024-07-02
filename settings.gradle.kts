@@ -33,3 +33,7 @@ include(":run:location")
 include(":run:network")
 
 gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
+include(":analytics:data")
+include(":analytics:domain")
+include(":analytics:presentation")
+include(":analytics:analytics_feature")
