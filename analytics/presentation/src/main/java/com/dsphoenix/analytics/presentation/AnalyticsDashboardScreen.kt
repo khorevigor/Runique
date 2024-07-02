@@ -106,7 +106,7 @@ private fun AnalyticsDashboardScreen(
                 }
                 AnalyticsCard(
                     title = stringResource(id = R.string.fastest_run),
-                    value = state.fastestEverRun,
+                    value = state.maxSpeed,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -124,7 +124,7 @@ private fun ScreenPreview() {
             state = AnalyticsDashboardState(
                 totalDistance = "1.2 km",
                 totalTime = "0d 8h 20m",
-                fastestEverRun = "123 km/h",
+                maxSpeed = "123 km/h",
                 avgDistance = "30 km",
                 avgPace = "7:30"
             ),
