@@ -1,6 +1,7 @@
 package com.dsphoenix.runique
 
 import android.app.Application
+import android.content.Context
 import com.dsphoenix.auth.data.di.authDataModule
 import com.dsphoenix.auth.presentation.di.authViewModelModule
 import com.dsphoenix.core.data.networking.di.coreDataModule
@@ -10,6 +11,7 @@ import com.dsphoenix.run.location.di.locationModule
 import com.dsphoenix.run.network.di.networkModule
 import com.dsphoenix.run.presentation.di.runPresentationModule
 import com.dsphoenix.runique.di.appModule
+import com.google.android.play.core.splitcompat.SplitCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
@@ -45,5 +47,10 @@ class RuniqueApp: Application() {
                 runDataModule
             )
         }
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        SplitCompat.install(this)
     }
 }
