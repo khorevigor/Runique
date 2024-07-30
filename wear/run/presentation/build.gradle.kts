@@ -11,6 +11,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.presentation.designsystemWear)
+
     implementation(libs.androidx.wear.compose.ui.tooling)
     implementation(libs.androidx.wear.compose.foundation)
     implementation(libs.androidx.wear.compose.material)
