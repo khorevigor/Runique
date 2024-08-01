@@ -1,5 +1,11 @@
 package com.dsphoenix.wear.run.presentation
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,12 +19,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.wear.compose.material3.FilledTonalIconButton
 import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.IconButtonDefaults
@@ -51,6 +60,8 @@ private fun TrackerScreen(
     state: TrackerState,
     onAction: (TrackerAction) -> Unit
 ) {
+    handlePermissions(context = LocalContext.current, onAction)
+
     if (state.isConnectedPhoneNearby) {
         Column(
             modifier = Modifier
@@ -175,6 +186,42 @@ fun ToggleRunButton(
             contentDescription = stringResource(id = R.string.start_run),
             tint = MaterialTheme.colorScheme.onBackground
         )
+    }
+}
+
+@Composable
+private fun handlePermissions(context: Context, onAction: (TrackerAction) -> Unit) {
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { perms ->
+        val hasBodySensorPermission = perms[Manifest.permission.BODY_SENSORS] == true
+        onAction(TrackerAction.OnBodySensorPermissionResult(hasBodySensorPermission))
+    }
+
+    LaunchedEffect(true) {
+        val hasBodySensorPermission = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.BODY_SENSORS
+        ) == PackageManager.PERMISSION_GRANTED
+
+        val hasNotificationPermission = if (Build.VERSION.SDK_INT >= 33) {
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
+
+        val permissions = mutableListOf<String>()
+        if (!hasBodySensorPermission) {
+            permissions.add(Manifest.permission.BODY_SENSORS)
+        }
+        if (!hasNotificationPermission) {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        permissionLauncher.launch(permissions.toTypedArray())
     }
 }
 
