@@ -23,6 +23,25 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.presentation.ui)
+    implementation(projects.core.presentation.designsystem)
+    implementation(projects.core.database)
+    implementation(projects.core.domain)
+    implementation(projects.core.data)
+
+    implementation(projects.auth.domain)
+    implementation(projects.auth.data)
+    implementation(projects.auth.presentation)
+
+    implementation(projects.run.data)
+    implementation(projects.run.location)
+    implementation(projects.run.domain)
+    implementation(projects.run.presentation)
+    implementation(projects.run.network)
+
+    implementation(projects.core.connectivity.domain)
+    implementation(projects.core.connectivity.data)
+
     // Coil
     implementation(libs.coil.compose)
 
@@ -64,22 +83,5 @@ dependencies {
 
     // Timber
     implementation(libs.timber)
-
-    implementation(projects.core.presentation.ui)
-    implementation(projects.core.presentation.designsystem)
-    implementation(projects.core.database)
-    implementation(projects.core.domain)
-    implementation(projects.core.data)
-
-
-    implementation(projects.auth.domain)
-    implementation(projects.auth.data)
-    implementation(projects.auth.presentation)
-
-    implementation(projects.run.data)
-    implementation(projects.run.location)
-    implementation(projects.run.domain)
-    implementation(projects.run.presentation)
-    implementation(projects.run.network)
 
 }
