@@ -1,7 +1,7 @@
 package com.dsphoenix.wear.app
 
 import android.app.Application
-import com.dsphoenix.core.connectivity.data.coreConnectivityDataModule
+import com.dsphoenix.core.connectivity.data.di.coreConnectivityDataModule
 import com.dsphoenix.wear.app.di.appModule
 import com.dsphoenix.wear.run.data.di.wearRunDataModule
 import com.dsphoenix.wear.run.presentation.di.wearRunPresentationModule
