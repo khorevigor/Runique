@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -39,6 +40,7 @@ import com.dsphoenix.core.presentation.designsystem.FinishIcon
 import com.dsphoenix.core.presentation.designsystem.PauseIcon
 import com.dsphoenix.core.presentation.designsystem.StartIcon
 import com.dsphoenix.core.presentation.designsystem_wear.RuniqueTheme
+import com.dsphoenix.presentation.ui.ObserveAsEvents
 import com.dsphoenix.presentation.ui.formatted
 import com.dsphoenix.presentation.ui.toFormattedHeartRate
 import com.dsphoenix.presentation.ui.toFormattedKm
@@ -49,6 +51,20 @@ import org.koin.androidx.compose.koinViewModel
 fun TrackerScreenRoot(
     viewModel: TrackerViewModel = koinViewModel()
 ) {
+    val context = LocalContext.current
+    ObserveAsEvents(flow = viewModel.events) { event ->
+        when (event) {
+            is TrackerEvent.Error -> {
+                Toast.makeText(
+                    context,
+                    event.message.asString(context),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            else -> Unit
+        }
+    }
+
     TrackerScreen(
         state = viewModel.state,
         onAction = viewModel::onAction
