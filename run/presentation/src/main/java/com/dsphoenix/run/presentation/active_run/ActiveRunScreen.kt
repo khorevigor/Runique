@@ -62,7 +62,6 @@ fun ActiveRunScreenRoot(
                 onFinishClick()
             }
         }
-
     }
 
     ActiveRunScreen(

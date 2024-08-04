@@ -245,6 +245,14 @@ private fun DataGrid(
         RunDataItemUi(
             name = stringResource(id = R.string.total_elevation),
             value = run.totalElevation
+        ),
+        RunDataItemUi(
+            name = stringResource(id = R.string.avg_heart_rate),
+            value = run.avgHeartRate
+        ),
+        RunDataItemUi(
+            name = stringResource(id = R.string.max_heart_rate),
+            value = run.maxHeartRate
         )
     )
 
@@ -257,7 +265,7 @@ private fun DataGrid(
     FlowRow(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         runDataUiList.forEach { run ->
             DataGridCell(
@@ -301,7 +309,9 @@ fun RunListItemPreview() {
             location = Location(0.0, 0.0),
             maxSpeedKmh = 15.3,
             totalElevationMeters = 45,
-            null
+            null,
+            avgHeartRate = 80,
+            maxHeartRate = 140,
         ).toRunUi(), onDeleteClick = { })
     }
 }

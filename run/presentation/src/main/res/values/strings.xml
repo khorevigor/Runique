@@ -21,8 +21,11 @@
     <string name="run_map">Run map</string>
     <string name="error_couldnt_load_image">Couldn\'t load image</string>
     <string name="total_running_time">Total running time</string>
-    <string name="avg_speed">Average speed</string>
+    <string name="avg_speed">Avg speed</string>
     <string name="max_speed">Max speed</string>
     <string name="total_elevation">Total elevation</string>
     <string name="delete">Delete</string>
+    <string name="heart_rate">Heart rate</string>
+    <string name="avg_heart_rate">Avg heart rate</string>
+    <string name="max_heart_rate">Max heart rate</string>
 </resources>

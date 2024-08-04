@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dsphoenix.core.presentation.designsystem.RuniqueTheme
 import com.dsphoenix.presentation.ui.formatted
+import com.dsphoenix.presentation.ui.toFormattedHeartRate
 import com.dsphoenix.presentation.ui.toFormattedKm
 import com.dsphoenix.presentation.ui.toFormattedPace
 import com.dsphoenix.run.domain.RunData
@@ -57,6 +58,11 @@ fun RunDataCard(
             RunDataItem(
                 title = stringResource(id = R.string.distance),
                 value = (runData.distanceMeters / 1000.0).toFormattedKm(),
+                modifier = Modifier.defaultMinSize(75.dp)
+            )
+            RunDataItem(
+                title = stringResource(id = R.string.heart_rate),
+                value = (runData.heartRates.lastOrNull().toFormattedHeartRate()),
                 modifier = Modifier.defaultMinSize(75.dp)
             )
             RunDataItem(
@@ -97,8 +103,10 @@ private fun RunDataItem(
 private fun RunDataCardPreview() {
     RuniqueTheme {
         RunDataCard(
-            elapsedTime = 10.minutes, runData = RunData(
+            elapsedTime = 10.minutes,
+            runData = RunData(
                 distanceMeters = 2000,
+                heartRates = listOf(90),
                 pace = 3.minutes,
             )
         )

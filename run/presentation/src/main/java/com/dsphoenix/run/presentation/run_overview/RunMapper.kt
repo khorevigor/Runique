@@ -2,6 +2,7 @@ package com.dsphoenix.run.presentation.run_overview
 
 import com.dsphoenix.core.domain.run.Run
 import com.dsphoenix.presentation.ui.formatted
+import com.dsphoenix.presentation.ui.toFormattedHeartRate
 import com.dsphoenix.presentation.ui.toFormattedKm
 import com.dsphoenix.presentation.ui.toFormattedKmh
 import com.dsphoenix.presentation.ui.toFormattedMeters
@@ -26,6 +27,8 @@ fun Run.toRunUi(): RunUi {
         maxSpeed = maxSpeedKmh.toFormattedKmh(),
         pace = duration.toFormattedPace(distanceKm),
         totalElevation = totalElevationMeters.toFormattedMeters(),
-        mapPictureUrl = mapPictureUrl
+        mapPictureUrl = mapPictureUrl,
+        avgHeartRate = avgHeartRate.toFormattedHeartRate(),
+        maxHeartRate = maxHeartRate.toFormattedHeartRate()
     )
 }

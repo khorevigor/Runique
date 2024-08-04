@@ -12,5 +12,7 @@ data class CreateRunRequest(
     val long: Double,
     val avgSpeedKmh: Double,
     val maxSpeedKmh: Double,
-    val totalElevationMeters: Int
+    val totalElevationMeters: Int,
+    val avgHeartRate: Int?,
+    val maxHeartRate: Int?
 )
