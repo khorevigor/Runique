@@ -25,6 +25,7 @@ android {
 dependencies {
     implementation(projects.core.presentation.ui)
     implementation(projects.core.presentation.designsystem)
+    implementation(projects.core.notification)
     implementation(projects.core.database)
     implementation(projects.core.domain)
     implementation(projects.core.data)

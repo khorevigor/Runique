@@ -11,8 +11,8 @@ import androidx.navigation.navDeepLink
 import com.dsphoenix.auth.presentation.intro.IntroScreenRoot
 import com.dsphoenix.auth.presentation.login.LoginScreenRoot
 import com.dsphoenix.auth.presentation.register.RegisterScreenRoot
+import com.dsphoenix.core.notification.ActiveRunService
 import com.dsphoenix.run.presentation.active_run.ActiveRunScreenRoot
-import com.dsphoenix.run.presentation.active_run.service.ActiveRunService
 import com.dsphoenix.run.presentation.run_overview.RunOverviewScreenRoot
 
 @Composable

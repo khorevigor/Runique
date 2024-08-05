@@ -11,11 +11,11 @@ import com.dsphoenix.core.domain.location.Location
 import com.dsphoenix.core.domain.run.Run
 import com.dsphoenix.core.domain.run.RunRepository
 import com.dsphoenix.core.domain.util.Result
+import com.dsphoenix.core.notification.ActiveRunService
 import com.dsphoenix.presentation.ui.asUiText
 import com.dsphoenix.run.domain.LocationDataCalculator
 import com.dsphoenix.run.domain.RunningTracker
 import com.dsphoenix.run.domain.WatchConnector
-import com.dsphoenix.run.presentation.active_run.service.ActiveRunService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,8 +39,8 @@ class ActiveRunViewModel(
 
     var state by mutableStateOf(
         ActiveRunState(
-            shouldTrack = ActiveRunService.isServiceActive() && runningTracker.isTracking.value,
-            hasStartedRunning = ActiveRunService.isServiceActive()
+            shouldTrack = ActiveRunService.isServiceActive.value && runningTracker.isTracking.value,
+            hasStartedRunning = ActiveRunService.isServiceActive.value
         )
     )
         private set
@@ -261,7 +261,7 @@ class ActiveRunViewModel(
     override fun onCleared() {
         super.onCleared()
 
-        if (!ActiveRunService.isServiceActive()) {
+        if (!ActiveRunService.isServiceActive.value) {
             applicationScope.launch {
                 watchConnector.sendToWatch(MessagingAction.Untrackable)
             }

@@ -21,6 +21,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,12 +30,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.material3.FilledTonalIconButton
 import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.IconButtonDefaults
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
+import com.dsphoenix.core.notification.ActiveRunService
 import com.dsphoenix.core.presentation.designsystem.ExclamationMarkIcon
 import com.dsphoenix.core.presentation.designsystem.FinishIcon
 import com.dsphoenix.core.presentation.designsystem.PauseIcon
@@ -49,9 +52,19 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TrackerScreenRoot(
+    onServiceToggle: (isServiceRunning: Boolean) -> Unit,
     viewModel: TrackerViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
+    val state = viewModel.state
+
+    val isServiceActive by ActiveRunService.isServiceActive.collectAsStateWithLifecycle()
+    LaunchedEffect(state.isRunActive, state.hasStartedRunning, isServiceActive) {
+        if (state.isRunActive && !isServiceActive) {
+            onServiceToggle(true)
+        }
+    }
+
     ObserveAsEvents(flow = viewModel.events) { event ->
         when (event) {
             is TrackerEvent.Error -> {
@@ -61,7 +74,9 @@ fun TrackerScreenRoot(
                     Toast.LENGTH_LONG
                 ).show()
             }
-            else -> Unit
+            TrackerEvent.RunFinished -> {
+                onServiceToggle(false)
+            }
         }
     }
 
