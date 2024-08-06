@@ -45,9 +45,9 @@ class PhoneToWatchConnector(
         .onEach { action ->
             if (action == MessagingAction.ConnectionRequest) {
                 if (isTrackable.value) {
-                    messagingClient.sendOrQueue(MessagingAction.Trackable)
+                    sendToWatch(MessagingAction.Trackable)
                 } else {
-                    messagingClient.sendOrQueue(MessagingAction.Untrackable)
+                    sendToWatch(MessagingAction.Untrackable)
                 }
             }
         }
@@ -62,10 +62,10 @@ class PhoneToWatchConnector(
             .flatMapLatest { isTrackable }
             .onEach { isTrackable ->
                 sendToWatch(MessagingAction.ConnectionRequest)
-                val action = if (isTrackable) {
-                    MessagingAction.Trackable
+                if (isTrackable) {
+                    sendToWatch(MessagingAction.Trackable)
                 } else {
-                    MessagingAction.Untrackable
+                    sendToWatch(MessagingAction.Untrackable)
                 }
             }
             .launchIn(applicationScope)

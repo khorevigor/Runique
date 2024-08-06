@@ -39,8 +39,8 @@ class RunningTracker(
     private val _elapsedTime = MutableStateFlow(Duration.ZERO)
     val elapsedTime = _elapsedTime.asStateFlow()
 
-    private val _isTracking = MutableStateFlow(false)
-    val isTracking = _isTracking.asStateFlow()
+    private val _isTrackingActive = MutableStateFlow(false)
+    val isTrackingActive = _isTrackingActive.asStateFlow()
 
     private val isObservingLocation = MutableStateFlow(false)
 
@@ -52,7 +52,7 @@ class RunningTracker(
         applicationScope, SharingStarted.Lazily, null
     )
 
-    private val heartRates = isTracking
+    private val heartRates = isTrackingActive
         .flatMapLatest { isTracking ->
             if (isTracking) {
                 watchConnector.messagingActions
@@ -70,7 +70,7 @@ class RunningTracker(
         )
 
     init {
-        _isTracking
+        _isTrackingActive
             .onEach { isTracking ->
                 if (!isTracking) {
                     val newList = buildList {
@@ -94,7 +94,7 @@ class RunningTracker(
 
         currentLocation
             .filterNotNull()
-            .combineTransform(_isTracking) { location, isTracking ->
+            .combineTransform(_isTrackingActive) { location, isTracking ->
                 if (isTracking) {
                     emit(location)
                 }
@@ -153,11 +153,11 @@ class RunningTracker(
     }
 
     fun startTracking() {
-        _isTracking.value = true
+        _isTrackingActive.value = true
     }
 
     fun stopTracking() {
-        _isTracking.value = false
+        _isTrackingActive.value = false
     }
 
     fun startObservingLocation() {

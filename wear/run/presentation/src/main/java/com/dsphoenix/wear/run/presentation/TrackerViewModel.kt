@@ -32,14 +32,14 @@ class TrackerViewModel(
 
     var state by mutableStateOf(TrackerState(
         hasStartedRunning = ActiveRunService.isServiceActive.value,
-        isRunActive = ActiveRunService.isServiceActive.value && runningTracker.isTracking.value,
+        isRunActive = ActiveRunService.isServiceActive.value && runningTracker.isTrackingActive.value,
         isTrackable = ActiveRunService.isServiceActive.value
     ))
         private set
 
     private val hasBodySensorPermission = MutableStateFlow(false)
 
-    private val isTracking = snapshotFlow {
+    private val isTrackingActive = snapshotFlow {
         state.isRunActive && state.isTrackable && state.isConnectedPhoneNearby
     }
         .stateIn(
@@ -58,8 +58,8 @@ class TrackerViewModel(
             .onEach { node ->
                 state = state.copy(isConnectedPhoneNearby = node.isNearby)
             }
-            .combine(isTracking) { _, isTracking ->
-                if (!isTracking) {
+            .combine(isTrackingActive) { _, isTrackingActive ->
+                if (!isTrackingActive) {
                     phoneConnector.sendToPhone(MessagingAction.ConnectionRequest)
                 }
             }
@@ -72,14 +72,14 @@ class TrackerViewModel(
             }
             .launchIn(viewModelScope)
 
-        isTracking
+        isTrackingActive
             .onEach { isTracking ->
                 val result = when {
                     isTracking && !state.hasStartedRunning -> {
                         exerciseTracker.startExercise()
                     }
 
-                    isTracking && !state.hasStartedRunning -> {
+                    isTracking && state.hasStartedRunning -> {
                         exerciseTracker.resumeExercise()
                     }
 
@@ -99,7 +99,7 @@ class TrackerViewModel(
                 if (isTracking) {
                     state = state.copy(hasStartedRunning = true)
                 }
-                runningTracker.setIsTracking(isTracking)
+                runningTracker.setIsTrackingActive(isTracking)
             }
             .launchIn(viewModelScope)
 

@@ -60,9 +60,7 @@ class HealthServicesExerciseTracker(
 
                 override fun onLapSummaryReceived(lapSummary: ExerciseLapSummary) = Unit
 
-                override fun onRegistered() {
-                    TODO("Not yet implemented")
-                }
+                override fun onRegistered() = Unit
 
                 override fun onRegistrationFailed(throwable: Throwable) {
                     if (BuildConfig.DEBUG) {
@@ -123,7 +121,7 @@ class HealthServicesExerciseTracker(
     }
 
     override suspend fun resumeExercise(): EmptyResult<ExerciseError> {
-        val result = checkExerciseStatePreconditions()
+        val result = checkExerciseStatePreconditions(setOf(ExerciseError.ONGOING_OTHER_EXERCISE))
         if (result is Result.Error)
             return result
 
@@ -136,7 +134,7 @@ class HealthServicesExerciseTracker(
     }
 
     override suspend fun pauseExercise(): EmptyResult<ExerciseError> {
-        val result = checkExerciseStatePreconditions()
+        val result = checkExerciseStatePreconditions(setOf(ExerciseError.ONGOING_OTHER_EXERCISE))
         if (result is Result.Error)
             return result
 

@@ -39,7 +39,7 @@ class ActiveRunViewModel(
 
     var state by mutableStateOf(
         ActiveRunState(
-            shouldTrack = ActiveRunService.isServiceActive.value && runningTracker.isTracking.value,
+            shouldTrack = ActiveRunService.isServiceActive.value && runningTracker.isTrackingActive.value,
             hasStartedRunning = ActiveRunService.isServiceActive.value
         )
     )
@@ -57,7 +57,7 @@ class ActiveRunViewModel(
 
     private val hasLocationPermission = MutableStateFlow(false)
 
-    private val isTracking =
+    private val isTrackingActive =
         combine(shouldTrack, hasLocationPermission) { shouldTrack, hasPermission ->
             shouldTrack && hasPermission
         }.stateIn(
@@ -76,9 +76,9 @@ class ActiveRunViewModel(
                 }
             }.launchIn(viewModelScope)
 
-        isTracking
-            .onEach { isTracking ->
-                if (isTracking) {
+        isTrackingActive
+            .onEach { isTrackingActive ->
+                if (isTrackingActive) {
                     runningTracker.startTracking()
                 } else {
                     runningTracker.stopTracking()
@@ -227,7 +227,7 @@ class ActiveRunViewModel(
             .onEach { action ->
                 when (action) {
                     MessagingAction.ConnectionRequest -> {
-                        if (isTracking.value) {
+                        if (isTrackingActive.value) {
                             watchConnector.sendToWatch(MessagingAction.StartOrResume)
                         }
                     }
@@ -237,13 +237,13 @@ class ActiveRunViewModel(
                     }
 
                     MessagingAction.Pause -> {
-                        if (isTracking.value) {
+                        if (isTrackingActive.value) {
                             onAction(ActiveRunAction.OnToggleRunClick, true)
                         }
                     }
 
                     MessagingAction.StartOrResume -> {
-                        if (!isTracking.value) {
+                        if (!isTrackingActive.value) {
                             if (state.hasStartedRunning) {
                                 onAction(ActiveRunAction.OnResumeRunClick, true)
                             } else {

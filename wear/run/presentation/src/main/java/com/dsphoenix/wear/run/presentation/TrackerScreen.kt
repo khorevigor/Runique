@@ -35,6 +35,7 @@ import androidx.wear.compose.material3.FilledTonalIconButton
 import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.IconButtonDefaults
 import androidx.wear.compose.material3.MaterialTheme
+import androidx.wear.compose.material3.OutlinedIconButton
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import com.dsphoenix.core.notification.ActiveRunService
@@ -74,6 +75,7 @@ fun TrackerScreenRoot(
                     Toast.LENGTH_LONG
                 ).show()
             }
+
             TrackerEvent.RunFinished -> {
                 onServiceToggle(false)
             }
@@ -91,7 +93,7 @@ private fun TrackerScreen(
     state: TrackerState,
     onAction: (TrackerAction) -> Unit
 ) {
-    handlePermissions(context = LocalContext.current, onAction)
+    HandlePermissions(context = LocalContext.current, onAction)
 
     if (state.isConnectedPhoneNearby) {
         Column(
@@ -205,23 +207,28 @@ fun ToggleRunButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    if (isRunActive) {
-        Icon(
-            imageVector = PauseIcon,
-            contentDescription = stringResource(id = R.string.pause_run),
-            tint = MaterialTheme.colorScheme.onBackground
-        )
-    } else {
-        Icon(
-            imageVector = StartIcon,
-            contentDescription = stringResource(id = R.string.start_run),
-            tint = MaterialTheme.colorScheme.onBackground
-        )
+    OutlinedIconButton(
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        if (isRunActive) {
+            Icon(
+                imageVector = PauseIcon,
+                contentDescription = stringResource(id = R.string.pause_run),
+                tint = MaterialTheme.colorScheme.onBackground
+            )
+        } else {
+            Icon(
+                imageVector = StartIcon,
+                contentDescription = stringResource(id = R.string.start_run),
+                tint = MaterialTheme.colorScheme.onBackground
+            )
+        }
     }
 }
 
 @Composable
-private fun handlePermissions(context: Context, onAction: (TrackerAction) -> Unit) {
+private fun HandlePermissions(context: Context, onAction: (TrackerAction) -> Unit) {
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { perms ->

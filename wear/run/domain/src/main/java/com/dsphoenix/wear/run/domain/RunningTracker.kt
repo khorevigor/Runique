@@ -25,8 +25,8 @@ class RunningTracker(
     private val _heartRate = MutableStateFlow(0)
     val heartRate = _heartRate.asStateFlow()
 
-    private val _isTracking = MutableStateFlow(false)
-    val isTracking = _isTracking.asStateFlow()
+    private val _isTrackingActive = MutableStateFlow(false)
+    val isTrackingActive = _isTrackingActive.asStateFlow()
 
     private val _isTrackable = MutableStateFlow(false)
     val isTrackable = _isTrackable.asStateFlow()
@@ -75,7 +75,7 @@ class RunningTracker(
             }
             .launchIn(applicationScope)
 
-        isTracking
+        isTrackingActive
             .flatMapLatest { isTracking ->
                 if (isTracking) {
                     exerciseTracker.heartRate
@@ -88,7 +88,7 @@ class RunningTracker(
             .launchIn(applicationScope)
     }
 
-    fun setIsTracking(isTracking: Boolean) {
-        _isTrackable.value = isTracking
+    fun setIsTrackingActive(isTrackingActive: Boolean) {
+        _isTrackingActive.value = isTrackingActive
     }
 }
