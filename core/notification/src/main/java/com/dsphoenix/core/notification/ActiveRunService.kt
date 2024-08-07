@@ -34,6 +34,7 @@ class ActiveRunService: Service() {
     private val baseNotification by lazy {
         NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(com.dsphoenix.core.presentation.designsystem.R.drawable.logo)
+            .setSilent(true)
             .setContentTitle(getString(R.string.active_run))
     }
 
@@ -59,7 +60,7 @@ class ActiveRunService: Service() {
         return START_STICKY
     }
 
-    fun start(activityClass: Class<*>) {
+    private fun start(activityClass: Class<*>) {
         if (!_isServiceActive.value) {
             _isServiceActive.value = true
             createNotificationChannel()
@@ -82,7 +83,7 @@ class ActiveRunService: Service() {
         }
     }
 
-    fun stop() {
+    private fun stop() {
         stopSelf()
         _isServiceActive.value = false
         serviceScope.cancel()
