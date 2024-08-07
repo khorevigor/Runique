@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.core.connectivity.domain)
     implementation(projects.core.notification)
 
+    implementation(libs.androidx.wear)
     implementation(libs.androidx.wear.compose.ui.tooling)
     implementation(libs.androidx.wear.compose.foundation)
     implementation(libs.androidx.wear.compose.material)
