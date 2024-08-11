@@ -120,7 +120,7 @@ private fun LoginScreen(
             RuniquePasswordTextField(
                 state = state.password,
                 isPasswordVisible = state.isPasswordVisible,
-                onTogglePasswordVisibility = { /*TODO*/ },
+                onTogglePasswordVisibility = { onAction(LoginAction.OnTogglePasswordVisibility) },
                 hint = stringResource(id = R.string.password),
                 title = stringResource(id = R.string.password),
                 modifier = Modifier.fillMaxWidth()
