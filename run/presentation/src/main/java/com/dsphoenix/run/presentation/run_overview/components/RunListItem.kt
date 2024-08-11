@@ -238,10 +238,10 @@ private fun DataGrid(
             name = stringResource(id = R.string.avg_speed),
             value = run.avgSpeed
         ),
-        RunDataItemUi(
-            name = stringResource(id = R.string.max_speed),
-            value = run.maxSpeed
-        ),
+//        RunDataItemUi(
+//            name = stringResource(id = R.string.max_speed),
+//            value = run.maxSpeed
+//        ),
         RunDataItemUi(
             name = stringResource(id = R.string.total_elevation),
             value = run.totalElevation
