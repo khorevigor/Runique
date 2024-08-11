@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.runique.android.application.compose)
     alias(libs.plugins.runique.jvm.ktor)
+    alias(libs.plugins.google.services.plugin)
 }
 
 android {
@@ -85,4 +86,6 @@ dependencies {
     // Timber
     implementation(libs.timber)
 
+    // Firebase
+    implementation(platform(libs.google.firebase.bom))
 }
