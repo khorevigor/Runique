@@ -10,10 +10,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dsphoenix.auth.domain.AuthRepository
+import com.dsphoenix.core.domain.auth.AuthRepository
 import com.dsphoenix.auth.domain.UserDataValidator
+import com.dsphoenix.auth.presentation.util.asUiText
 import com.dsphoenix.core.domain.util.Result
-import com.dsphoenix.presentation.ui.asUiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

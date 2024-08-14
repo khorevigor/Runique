@@ -1,6 +1,5 @@
 package com.dsphoenix.core.data.networking.run
 
-import com.dsphoenix.core.data.networking.get
 import com.dsphoenix.core.database.dao.RunPendingSyncDao
 import com.dsphoenix.core.database.mappers.toRun
 import com.dsphoenix.core.domain.SessionStorage
@@ -15,9 +14,6 @@ import com.dsphoenix.core.domain.util.EmptyResult
 import com.dsphoenix.core.domain.util.Result
 import com.dsphoenix.core.domain.util.asEmptyDataResult
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.auth.Auth
-import io.ktor.client.plugins.auth.providers.BearerAuthProvider
-import io.ktor.client.plugins.plugin
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -151,16 +147,5 @@ class OfflineFirstRunRepository(
             createJobs.forEach { it.join() }
             deleteJobs.forEach { it.join() }
         }
-    }
-
-    override suspend fun logout(): EmptyResult<DataError.Network> {
-        val result = httpClient.get<Unit>(
-            route = "/logout"
-        ).asEmptyDataResult()
-
-        httpClient.plugin(Auth).providers.filterIsInstance<BearerAuthProvider>()
-            .firstOrNull()?.clearToken()
-
-        return result
     }
 }
