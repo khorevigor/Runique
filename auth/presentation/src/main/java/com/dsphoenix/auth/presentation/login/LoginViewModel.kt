@@ -9,13 +9,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dsphoenix.auth.domain.AuthRepository
+import com.dsphoenix.core.domain.auth.AuthError
+import com.dsphoenix.core.domain.auth.AuthRepository
 import com.dsphoenix.auth.domain.UserDataValidator
-import com.dsphoenix.auth.presentation.R
-import com.dsphoenix.core.domain.util.DataError
+import com.dsphoenix.auth.presentation.util.asUiText
 import com.dsphoenix.core.domain.util.Result
-import com.dsphoenix.presentation.ui.UiText
-import com.dsphoenix.presentation.ui.asUiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
@@ -64,10 +62,10 @@ class LoginViewModel(
 
             when (result) {
                 is Result.Error -> {
-                    if (result.error == DataError.Network.UNAUTHORIZED) {
+                    if (result.error == AuthError.INVALID_CREDENTIALS) {
                         eventChannel.send(
                             LoginEvent.Error(
-                                UiText.StringResource(R.string.error_email_password_incorrect)
+                                result.error.asUiText()
                             )
                         )
                     } else {

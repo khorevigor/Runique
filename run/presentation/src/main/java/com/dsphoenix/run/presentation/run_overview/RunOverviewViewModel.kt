@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dsphoenix.core.domain.SessionStorage
+import com.dsphoenix.core.domain.auth.AuthRepository
 import com.dsphoenix.core.domain.run.RunRepository
 import com.dsphoenix.core.domain.run.SyncRunScheduler
 import com.dsphoenix.run.presentation.run_overview.model.RunUi
@@ -19,7 +19,7 @@ class RunOverviewViewModel(
     private val runRepository: RunRepository,
     private val syncRunScheduler: SyncRunScheduler,
     private val applicationScope: CoroutineScope,
-    private val sessionStorage: SessionStorage
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     var state by mutableStateOf(RunOverviewState())
@@ -62,8 +62,7 @@ class RunOverviewViewModel(
         applicationScope.launch {
             syncRunScheduler.cancelAllSyncs()
             runRepository.deleteAllRuns()
-            runRepository.logout()
-            sessionStorage.set(null)
+            authRepository.logout()
         }
     }
 }
