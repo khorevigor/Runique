@@ -115,6 +115,7 @@ androidx-health-services-client = { group = "androidx.health", name = "health-se
 androidx-wear = { group = "androidx.wear", name = "wear", version.ref = "wear" }
 google-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom"}
 google-firebase-auth = { group = "com.google.firebase", name = "firebase-auth"}
+google-firebase-firestore = {group = "com.google.firebase", name = "firebase-firestore"}
 
 # Gradle
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
