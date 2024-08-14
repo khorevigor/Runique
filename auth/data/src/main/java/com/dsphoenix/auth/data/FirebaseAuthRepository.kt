@@ -20,8 +20,8 @@ class FirebaseAuthRepository : AuthRepository {
         return auth.currentUser != null
     }
 
-    override fun logout() {
-        auth.signOut()
+    override fun getUserId(): String {
+        return auth.currentUser?.uid ?: throw IllegalStateException("User is not logged in")
     }
 
     override suspend fun login(email: String, password: String): EmptyResult<AuthError> {
@@ -63,5 +63,9 @@ class FirebaseAuthRepository : AuthRepository {
                     }
                 }
         }
+    }
+
+    override fun logout() {
+        auth.signOut()
     }
 }
