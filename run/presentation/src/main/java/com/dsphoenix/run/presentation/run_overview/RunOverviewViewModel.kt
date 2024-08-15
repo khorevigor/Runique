@@ -38,8 +38,7 @@ class RunOverviewViewModel(
         }.launchIn(viewModelScope)
 
         viewModelScope.launch {
-            // TODO: Uncomment when firebase store is set up
-//            runRepository.syncPendingRuns()
+            runRepository.syncPendingRuns()
             runRepository.fetchRuns()
         }
     }
