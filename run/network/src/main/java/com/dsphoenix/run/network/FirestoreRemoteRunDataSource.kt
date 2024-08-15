@@ -1,11 +1,13 @@
 package com.dsphoenix.run.network
 
 import com.dsphoenix.core.domain.auth.AuthRepository
+import com.dsphoenix.core.domain.run.RemoteImageDataSource
 import com.dsphoenix.core.domain.run.RemoteRunDataSource
 import com.dsphoenix.core.domain.run.Run
 import com.dsphoenix.core.domain.util.DataError
 import com.dsphoenix.core.domain.util.EmptyResult
 import com.dsphoenix.core.domain.util.Result
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -14,7 +16,10 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class FirestoreRemoteRunDataSource(authRepository: AuthRepository) : RemoteRunDataSource {
+class FirestoreRemoteRunDataSource(
+    authRepository: AuthRepository,
+    private val imageDataSource: RemoteImageDataSource
+) : RemoteRunDataSource {
 
     private val firestore = Firebase.firestore
 
@@ -46,12 +51,17 @@ class FirestoreRemoteRunDataSource(authRepository: AuthRepository) : RemoteRunDa
         val runId = run.id
             ?: throw IllegalStateException("ID have to be present")
 
-        // TODO: Map picture should be uploaded here and url added to run object
+        val imageResult = imageDataSource.uploadImage(runId, mapPicture)
+
+        if (imageResult is Result.Error)
+            return imageResult
+
+        val runDtoWithMapUrl = runDto.copy(mapPictureUrl = (imageResult as Result.Success).data)
 
         return suspendCoroutine { continuation ->
             runsCollection
                 .document(runId)
-                .set(runDto)
+                .set(runDtoWithMapUrl)
                 .addOnSuccessListener {
                     Timber.d("Run added with id: $runId")
                     continuation.resume(Result.Success(run))
@@ -82,6 +92,10 @@ class FirestoreRemoteRunDataSource(authRepository: AuthRepository) : RemoteRunDa
     ) {
         Timber.d(exception.message)
         when (exception) {
+            is FirebaseNetworkException -> {
+                continuation.resume(Result.Error(DataError.Network.NO_INTERNET))
+            }
+
             is FirebaseFirestoreException -> {
                 when (exception.code) {
                     FirebaseFirestoreException.Code.UNAVAILABLE -> {
@@ -91,6 +105,8 @@ class FirestoreRemoteRunDataSource(authRepository: AuthRepository) : RemoteRunDa
                     else -> continuation.resume(Result.Error(DataError.Network.UNKNOWN))
                 }
             }
+
+            else -> continuation.resume(Result.Error(DataError.Network.UNKNOWN))
         }
     }
 }
