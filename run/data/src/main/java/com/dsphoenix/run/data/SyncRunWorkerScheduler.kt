@@ -13,7 +13,7 @@ import com.dsphoenix.core.database.dao.RunPendingSyncDao
 import com.dsphoenix.core.database.entity.DeletedRunSyncEntity
 import com.dsphoenix.core.database.entity.RunPendingSyncEntity
 import com.dsphoenix.core.database.mappers.toRunEntity
-import com.dsphoenix.core.domain.SessionStorage
+import com.dsphoenix.core.domain.auth.AuthRepository
 import com.dsphoenix.core.domain.run.Run
 import com.dsphoenix.core.domain.run.RunId
 import com.dsphoenix.core.domain.run.SyncRunScheduler
@@ -26,9 +26,9 @@ import kotlin.time.Duration
 import kotlin.time.toJavaDuration
 
 class SyncRunWorkerScheduler(
-    private val context: Context,
+    context: Context,
     private val pendingSyncDao: RunPendingSyncDao,
-    private val sessionStorage: SessionStorage,
+    private val authRepository: AuthRepository,
     private val applicationScope: CoroutineScope
 ) : SyncRunScheduler {
 
@@ -85,7 +85,7 @@ class SyncRunWorkerScheduler(
     }
 
     private suspend fun scheduleCreateRunWorker(run: Run, mapPictureBytes: ByteArray) {
-        val userId = sessionStorage.get()?.userId ?: return
+        val userId = authRepository.getUserId()
 
         val pendingRun = RunPendingSyncEntity(
             run = run.toRunEntity(),
@@ -120,7 +120,7 @@ class SyncRunWorkerScheduler(
     }
 
     private suspend fun scheduleDeleteRunWorker(runId: RunId) {
-        val userId = sessionStorage.get()?.userId ?: return
+        val userId = authRepository.getUserId()
 
         val entity = DeletedRunSyncEntity(runId, userId)
         pendingSyncDao.upsertDeletedRunSyncEntity(entity)
