@@ -64,7 +64,7 @@ class FirestoreRemoteRunDataSource(
                 .set(runDtoWithMapUrl)
                 .addOnSuccessListener {
                     Timber.d("Run added with id: $runId")
-                    continuation.resume(Result.Success(run))
+                    continuation.resume(Result.Success(runDtoWithMapUrl.toRun()))
                 }
                 .addOnFailureListener { exception ->
                     onFailure(continuation, exception)

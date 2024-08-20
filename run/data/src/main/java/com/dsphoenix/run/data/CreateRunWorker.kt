@@ -5,12 +5,14 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.dsphoenix.core.database.dao.RunPendingSyncDao
 import com.dsphoenix.core.database.mappers.toRun
+import com.dsphoenix.core.domain.run.LocalRunDataSource
 import com.dsphoenix.core.domain.run.RemoteRunDataSource
 
 class CreateRunWorker(
     context: Context,
     private val params: WorkerParameters,
     private val remoteRunDataSource: RemoteRunDataSource,
+    private val localRunDataSource: LocalRunDataSource,
     private val pendingSyncDao: RunPendingSyncDao
 ) : CoroutineWorker(context, params) {
 
@@ -29,6 +31,7 @@ class CreateRunWorker(
         )) {
             is com.dsphoenix.core.domain.util.Result.Error -> result.error.toWorkerResult()
             is com.dsphoenix.core.domain.util.Result.Success -> {
+                localRunDataSource.upsertRun(result.data)
                 pendingSyncDao.deleteRunPendingSyncEntity(pendingRunId)
                 return Result.success()
             }

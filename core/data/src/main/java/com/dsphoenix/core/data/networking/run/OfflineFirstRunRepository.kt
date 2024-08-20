@@ -2,7 +2,7 @@ package com.dsphoenix.core.data.networking.run
 
 import com.dsphoenix.core.database.dao.RunPendingSyncDao
 import com.dsphoenix.core.database.mappers.toRun
-import com.dsphoenix.core.domain.SessionStorage
+import com.dsphoenix.core.domain.auth.AuthRepository
 import com.dsphoenix.core.domain.run.LocalRunDataSource
 import com.dsphoenix.core.domain.run.RemoteRunDataSource
 import com.dsphoenix.core.domain.run.Run
@@ -13,7 +13,6 @@ import com.dsphoenix.core.domain.util.DataError
 import com.dsphoenix.core.domain.util.EmptyResult
 import com.dsphoenix.core.domain.util.Result
 import com.dsphoenix.core.domain.util.asEmptyDataResult
-import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -26,10 +25,9 @@ class OfflineFirstRunRepository(
     private val remoteRunDataSource: RemoteRunDataSource,
     private val applicationScope: CoroutineScope,
     private val runPendingSyncDao: RunPendingSyncDao,
-    private val sessionStorage: SessionStorage,
+    private val authRepository: AuthRepository,
     private val syncRunScheduler: SyncRunScheduler,
     private val connectivityChecker: ConnectivityChecker,
-    private val httpClient: HttpClient
 ) : RunRepository {
 
     override fun getRuns(): Flow<List<Run>> {
@@ -66,7 +64,7 @@ class OfflineFirstRunRepository(
                 applicationScope.launch {
                     syncRunScheduler.scheduleSync(
                         syncType = SyncRunScheduler.SyncType.CreateRun(
-                            run = run,
+                            run = runWithId,
                             mapPictureBytes = mapPicture
                         )
                     )
@@ -113,7 +111,7 @@ class OfflineFirstRunRepository(
 
     override suspend fun syncPendingRuns() {
         withContext(Dispatchers.IO) {
-            val userId = sessionStorage.get()?.userId ?: return@withContext
+            val userId = authRepository.getUserId()
 
             val createdRuns = async {
                 runPendingSyncDao.getAllRunPendingSyncEntities(userId)
