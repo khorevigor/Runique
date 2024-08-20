@@ -26,26 +26,23 @@ class FirebaseStorageImageDataSource(
         val imageRef = storageReference.child(runId)
 
         return suspendCoroutine { continuation ->
-            imageRef.putBytes(image).continueWithTask { task ->
-                if (!task.isSuccessful) {
-                    task.exception?.let { throw it }
-                }
-
-                imageRef.downloadUrl
-            }
-                .addOnSuccessListener { uri ->
+            imageRef.putBytes(image)
+                .addOnSuccessListener {
                     Timber.d("Image uploaded")
-                    continuation.resume(Result.Success(uri.toString()))
+                    imageRef.downloadUrl.addOnSuccessListener { url ->
+                        continuation.resume(Result.Success(url.toString()))
+                    }
                 }
                 .addOnFailureListener { exception ->
-                    Timber.d(exception.message)
-
+                    Timber.d(exception)
                     when (exception) {
                         is FirebaseNetworkException -> {
                             continuation.resume(Result.Error(DataError.Network.NO_INTERNET))
                         }
 
-                        else -> continuation.resume(Result.Error(DataError.Network.UNKNOWN))
+                        else -> {
+                            continuation.resume(Result.Error(DataError.Network.UNKNOWN))
+                        }
                     }
                 }
         }

@@ -24,6 +24,7 @@ android {
 }
 
 dependencies {
+
     implementation(projects.core.presentation.ui)
     implementation(projects.core.presentation.designsystem)
     implementation(projects.core.notification)
@@ -88,4 +89,5 @@ dependencies {
 
     // Firebase
     implementation(platform(libs.google.firebase.bom))
+    implementation(libs.google.firebase.appcheck.debug)
 }

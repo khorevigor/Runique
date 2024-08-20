@@ -54,6 +54,7 @@ fun TrackerMap(
     currentLocation: Location?,
     locations: List<List<LocationTimestamp>>,
     onSnapshot: (Bitmap) -> Unit,
+    onEmptyLocations: (() -> Unit)?,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -126,8 +127,14 @@ fun TrackerMap(
             if (isRunFinished && triggerCapture && createSnapshotJob == null) {
                 triggerCapture = false
 
+                val flatLocations = locations.flatten()
+                if (flatLocations.size <= 1) {
+                    onEmptyLocations?.invoke()
+                    return@MapEffect
+                }
+
                 val boundsBuilder = LatLngBounds.builder()
-                locations.flatten().forEach { location ->
+                flatLocations.forEach { location ->
                     boundsBuilder
                         .include(
                             LatLng(
