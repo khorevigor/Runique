@@ -28,6 +28,7 @@ class OfflineFirstRunRepository(
     private val runPendingSyncDao: RunPendingSyncDao,
     private val sessionStorage: SessionStorage,
     private val syncRunScheduler: SyncRunScheduler,
+    private val connectivityChecker: ConnectivityChecker,
     private val httpClient: HttpClient
 ) : RunRepository {
 
@@ -53,14 +54,19 @@ class OfflineFirstRunRepository(
         }
 
         val runWithId = run.copy(id = localResult.data)
-        val remoteResult = remoteRunDataSource.postRun(runWithId, mapPicture)
+
+        var remoteResult: Result<Run , DataError>? = null
+
+        if (connectivityChecker.isNetworkAvailable())
+            remoteResult = remoteRunDataSource.postRun(runWithId, mapPicture)
 
         return when (remoteResult) {
+            null, // fallthru
             is Result.Error -> {
                 applicationScope.launch {
                     syncRunScheduler.scheduleSync(
                         syncType = SyncRunScheduler.SyncType.CreateRun(
-                            run = runWithId,
+                            run = run,
                             mapPictureBytes = mapPicture
                         )
                     )
@@ -73,6 +79,7 @@ class OfflineFirstRunRepository(
                     localRunDataSource.upsertRun(remoteResult.data).asEmptyDataResult()
                 }.await()
             }
+
         }
     }
 

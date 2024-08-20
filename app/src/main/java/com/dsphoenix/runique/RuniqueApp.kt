@@ -13,6 +13,10 @@ import com.dsphoenix.run.network.di.networkModule
 import com.dsphoenix.run.presentation.di.runPresentationModule
 import com.dsphoenix.runique.di.appModule
 import com.google.android.play.core.splitcompat.SplitCompat
+import com.google.firebase.Firebase
+import com.google.firebase.appcheck.appCheck
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
+import com.google.firebase.initialize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
@@ -49,6 +53,11 @@ class RuniqueApp: Application() {
                 coreConnectivityDataModule
             )
         }
+
+        Firebase.initialize(context = this)
+        Firebase.appCheck.installAppCheckProviderFactory(
+            DebugAppCheckProviderFactory.getInstance(),
+        )
     }
 
     override fun attachBaseContext(base: Context?) {

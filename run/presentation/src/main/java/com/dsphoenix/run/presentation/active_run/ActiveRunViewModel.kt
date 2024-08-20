@@ -172,6 +172,14 @@ class ActiveRunViewModel(
             is ActiveRunAction.OnRunProcessed -> {
                 finishRun(action.mapPictureBytes)
             }
+
+            is ActiveRunAction.OnEmptyRunFinish -> {
+                state = state.copy(
+                    isRunFinished = true,
+                    isSavingRun = false
+                )
+                runningTracker.finishRun()
+            }
         }
     }
 

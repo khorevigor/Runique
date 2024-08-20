@@ -77,6 +77,9 @@ fun ActiveRunScreenRoot(
                         onBackClick()
                     }
                 }
+                is ActiveRunAction.OnEmptyRunFinish -> {
+                    onBackClick()
+                }
                 else -> Unit
             }
             viewModel.onAction(action)
@@ -200,6 +203,7 @@ private fun ActiveRunScreen(
                     }
                     onAction(ActiveRunAction.OnRunProcessed(stream.toByteArray()))
                 },
+                onEmptyLocations = { onAction(ActiveRunAction.OnEmptyRunFinish) },
                 modifier = Modifier
                     .fillMaxSize()
             )
