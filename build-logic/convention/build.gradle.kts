@@ -30,6 +30,10 @@ gradlePlugin {
             id = "runique.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
+        register("androidLibraryFirebase") {
+            id = "runique.android.library.firebase"
+            implementationClass = "AndroidLibraryFirebaseConventionPlugin"
+        }
         register("androidLibraryCompose") {
             id = "runique.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
@@ -49,10 +53,6 @@ gradlePlugin {
         register("jvmLibrary") {
             id = "runique.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
-        }
-        register("jvmKtor") {
-            id = "runique.jvm.ktor"
-            implementationClass = "JvmKtorConventionPlugin"
         }
     }
 }

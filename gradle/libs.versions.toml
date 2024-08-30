@@ -1,8 +1,7 @@
 [versions]
 agp = "8.2.2"
 androidTools = "31.2.2"
-core = "1.10.3"
-playCore = "1.10.3"
+featureDelivery = "2.1.0"
 coreSplashscreen = "1.0.1"
 coilCompose = "2.6.0"
 composeCompiler = "1.5.9"
@@ -13,9 +12,6 @@ junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 activityCompose = "1.8.2"
-ktor = "2.3.8"
-ktorClientLogging = "2.3.8"
-ktorServerCallLogging = "2.3.7"
 koin = "3.5.3"
 lifecycleRuntimeKtx = "2.7.0"
 composeBom = "2024.02.02"
@@ -48,11 +44,11 @@ firebase-bom = "33.1.2"
 
 # Project versions
 projectApplicationId = "com.dsphoenix.runique"
-projectVersionName = "1.0"
+projectVersionName = "1.0.1"
 projectMinSdkVersion = "25"
 projectTargetSdkVersion = "34"
 projectCompileSdkVersion = "34"
-projectVersionCode = "1"
+projectVersionCode = "2"
 navigationRuntimeKtx = "2.7.7"
 wearToolingPreview = "1.0.0"
 
@@ -65,8 +61,7 @@ androidx-material-icons-extended = { module = "androidx.compose.material:materia
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-security-crypto-ktx = { module = "androidx.security:security-crypto-ktx", version.ref = "securityCryptoKtx" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
-core = { module = "com.google.android.play:core", version.ref = "playCore" }
-core-testing = { module = "com.google.android.play:core-testing", version.ref = "playCore" }
+feature-delivery = { module = "com.google.android.play:feature-delivery", version.ref = "featureDelivery"}
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization"}
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines"}
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines"}
@@ -89,12 +84,6 @@ koin-android-workmanager = { group = "io.insert-koin", name = "koin-androidx-wor
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
-ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
-ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
-ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
-ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorClientLogging" }
-ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
@@ -106,7 +95,6 @@ google-android-gms-play-services-location = { module = "com.google.android.gms:p
 org-mongodb-bson = { module = "org.mongodb:bson", version.ref = "bson" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 google-maps-android-utils-ktx = { module = "com.google.maps.android:maps-utils-ktx", version.ref = "mapsUtils"}
-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 androidx-wear-compose-material = { group = "androidx.wear.compose", name = "compose-material3", version.ref = "composeMaterialWearOs" }
 androidx-wear-compose-foundation = { group = "androidx.wear.compose", name = "compose-foundation", version.ref = "composeWearOs" }
 androidx-wear-compose-ui-tooling = { group = "androidx.wear.compose", name = "compose-ui-tooling", version.ref = "composeWearOs" }
@@ -143,12 +131,12 @@ google-services-plugin = { id = "com.google.gms.google-services", version.ref = 
 runique-android-application = { id = "runique.android.application", version = "unspecified"}
 runique-android-application-compose = { id = "runique.android.application.compose", version = "unspecified"}
 runique-android-library = { id = "runique.android.library", version = "unspecified"}
+runique-android-library-firebase = { id = "runique.android.library.firebase", version = "unspecified"}
 runique-android-library-compose = { id = "runique.android.library.compose", version = "unspecified"}
 runique-android-feature-ui = { id = "runique.android.feature.ui", version = "unspecified" }
 runique-android-room = { id = "runique.android.room", version = "unspecified" }
 runique-android-dynamic-feature = { id = "runique.android.dynamic.feature", version = "unspecified" }
 runique-jvm-library = { id = "runique.jvm.library", version = "unspecified" }
-runique-jvm-ktor = { id = "runique.jvm.ktor", version = "unspecified" }
 runique-android-application-wear-compose = { id = "runique.android.application.wear.compose", version = "unspecified" }
 
 [bundles]
@@ -167,11 +155,3 @@ compose-debug = [
 ]
 koin = ["koin-core", "koin-android", "koin-android-workmanager"]
 koin-compose = ["koin-core", "koin-android", "koin-android-workmanager", "koin-androidx-compose"]
-ktor = [
-    "ktor-client-auth",
-    "ktor-client-cio",
-    "ktor-client-content-negotiation",
-    "ktor-client-core",
-    "ktor-client-logging",
-    "ktor-serialization-kotlinx-json"
-]

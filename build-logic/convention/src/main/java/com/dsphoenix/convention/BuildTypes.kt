@@ -5,30 +5,28 @@ import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.DynamicFeatureExtension
 import com.android.build.api.dsl.LibraryExtension
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
 internal fun Project.configureBuildTypes(
     commonExtension: CommonExtension<*, *, *, *, *>,
-    extensionType: ExtensionType
+    extensionType: ExtensionType,
+    minifyEnabled: Boolean = false
 ) {
     commonExtension.run {
         buildFeatures {
             buildConfig = true
         }
 
-        val apiKey = gradleLocalProperties(rootDir).getProperty("API_KEY")
-
         when (extensionType) {
             ExtensionType.APPLICATION -> {
                 extensions.configure<ApplicationExtension> {
                     buildTypes {
                         debug {
-                            configureDebugBuildType(apiKey)
+                            configureDebugBuildType(minifyEnabled)
                         }
                         release {
-                            configureReleaseBuildType(commonExtension, apiKey)
+                            configureReleaseBuildType(commonExtension, minifyEnabled)
                         }
                     }
                 }
@@ -38,10 +36,10 @@ internal fun Project.configureBuildTypes(
                 extensions.configure<LibraryExtension> {
                     buildTypes {
                         debug {
-                            configureDebugBuildType(apiKey)
+                            configureDebugBuildType(minifyEnabled)
                         }
                         release {
-                            configureReleaseBuildType(commonExtension, apiKey)
+                            configureReleaseBuildType(commonExtension, minifyEnabled)
                         }
                     }
                 }
@@ -51,10 +49,10 @@ internal fun Project.configureBuildTypes(
                 extensions.configure<DynamicFeatureExtension> {
                     buildTypes {
                         debug {
-                            configureDebugBuildType(apiKey)
+                            configureDebugBuildType(minifyEnabled)
                         }
                         release {
-                            configureReleaseBuildType(commonExtension, apiKey, false)
+                            configureReleaseBuildType(commonExtension, minifyEnabled = false)
                         }
                     }
                 }
@@ -63,22 +61,16 @@ internal fun Project.configureBuildTypes(
     }
 }
 
-private fun BuildType.configureDebugBuildType(apiKey: String) {
-    buildConfigField("String", "API_KEY", "\"$apiKey\"")
-    buildConfigField("String", "BASE_URL", "\"https://runique.pl-coding.com:8080\"")
+private fun BuildType.configureDebugBuildType(minifyEnabled: Boolean = false) {
+    isMinifyEnabled = minifyEnabled
 }
 
 private fun BuildType.configureReleaseBuildType(
     commonExtension: CommonExtension<*, *, *, *, *>,
-    apiKey: String,
-    minified: Boolean = true
+    minifyEnabled: Boolean = true
 ) {
-    buildConfigField("String", "API_KEY", "\"$apiKey\"")
-    buildConfigField("String", "BASE_URL", "\"https://runique.pl-coding.com:8080\"")
-
-    isMinifyEnabled = minified
+    isMinifyEnabled = minifyEnabled
     proguardFiles(
-        commonExtension.getDefaultProguardFile("proguard-android-optimize.txt"),
         "proguard-rules.pro"
     )
 }

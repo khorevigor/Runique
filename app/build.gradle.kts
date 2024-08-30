@@ -1,10 +1,27 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.runique.android.application.compose)
-    alias(libs.plugins.runique.jvm.ktor)
     alias(libs.plugins.google.services.plugin)
 }
 
 android {
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use {
+            localProperties.load(it)
+        }
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file(localProperties["KEYSTORE_PATH"] as String)
+            storePassword = localProperties["STORE_PASSWORD"] as String
+            keyPassword = localProperties["KEY_PASSWORD"] as String
+            keyAlias = localProperties["KEY_ALIAS"] as String
+        }
+    }
     namespace = "com.dsphoenix.runique"
 
     defaultConfig {
@@ -21,6 +38,11 @@ android {
         }
     }
     dynamicFeatures += setOf(":analytics:analytics_feature")
+    buildTypes {
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
+        }
+    }
 }
 
 dependencies {
@@ -69,7 +91,7 @@ dependencies {
     // Koin
     implementation(libs.bundles.koin)
 
-    api(libs.core)
+    api(libs.feature.delivery)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

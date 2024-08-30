@@ -1,4 +1,4 @@
-package com.dsphoenix.core.data.networking.run
+package com.dsphoenix.run.data
 
 import android.content.Context
 import android.net.ConnectivityManager

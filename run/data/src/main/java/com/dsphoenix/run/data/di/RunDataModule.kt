@@ -1,9 +1,12 @@
 package com.dsphoenix.run.data.di
 
+import com.dsphoenix.core.domain.run.RunRepository
 import com.dsphoenix.core.domain.run.SyncRunScheduler
+import com.dsphoenix.run.data.ConnectivityChecker
 import com.dsphoenix.run.data.CreateRunWorker
 import com.dsphoenix.run.data.DeleteRunWorker
 import com.dsphoenix.run.data.FetchRunsWorker
+import com.dsphoenix.run.data.OfflineFirstRunRepository
 import com.dsphoenix.run.data.SyncRunWorkerScheduler
 import com.dsphoenix.run.data.connectivity.PhoneToWatchConnector
 import com.dsphoenix.run.domain.WatchConnector
@@ -19,4 +22,7 @@ val runDataModule = module {
 
     singleOf(::SyncRunWorkerScheduler).bind<SyncRunScheduler>()
     singleOf(::PhoneToWatchConnector).bind<WatchConnector>()
+
+    singleOf(::OfflineFirstRunRepository).bind<RunRepository>()
+    singleOf(::ConnectivityChecker)
 }

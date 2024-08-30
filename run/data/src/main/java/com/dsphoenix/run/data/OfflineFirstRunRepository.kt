@@ -1,4 +1,4 @@
-package com.dsphoenix.core.data.networking.run
+package com.dsphoenix.run.data
 
 import com.dsphoenix.core.database.dao.RunPendingSyncDao
 import com.dsphoenix.core.database.mappers.toRun
