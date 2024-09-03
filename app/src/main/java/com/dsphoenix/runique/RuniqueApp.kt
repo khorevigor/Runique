@@ -15,6 +15,7 @@ import com.google.android.play.core.splitcompat.SplitCompat
 import com.google.firebase.Firebase
 import com.google.firebase.appcheck.appCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.google.firebase.initialize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -52,14 +53,26 @@ class RuniqueApp: Application() {
             )
         }
 
-        Firebase.initialize(context = this)
-        Firebase.appCheck.installAppCheckProviderFactory(
-            DebugAppCheckProviderFactory.getInstance(),
-        )
+        Firebase.initialize(this)
+        setAppCheckProvider()
     }
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         SplitCompat.install(this)
+    }
+
+    private fun setAppCheckProvider() {
+        @Suppress("KotlinConstantConditions")
+        if (BuildConfig.BUILD_TYPE == "debug") {
+            Firebase.appCheck.installAppCheckProviderFactory(
+                DebugAppCheckProviderFactory.getInstance(),
+            )
+        }
+        else {
+            Firebase.appCheck.installAppCheckProviderFactory(
+                PlayIntegrityAppCheckProviderFactory.getInstance(),
+            )
+        }
     }
 }
